@@ -10,7 +10,7 @@ Mahalanobis distance = Ordinary Euclidean distance computed after whitening tran
 
 import numpy as np
 from scipy import linalg, stats
-from scipy.linalg import svd, svdvals
+from sklearn.covariance import MinCovDet
 
 
 def compute_whitening_transform(cells, rank=None):
@@ -43,7 +43,7 @@ def compute_whitening_transform_robust(cells, rank=None):
 
     if rank is None:
         eps = np.finfo(u.dtype.char.lower()).eps
-        rtol = np.max(np.abs(sigma)) * max(cov_matrix.shape) * eps
+        rtol = np.max(np.abs(sigma)) * max(cells.shape) * eps
         cutoff = (abs(sigma) > rtol)
         rank = np.sum(cutoff)
     else:
@@ -52,7 +52,7 @@ def compute_whitening_transform_robust(cells, rank=None):
     cells = u[:, :rank] @ np.diag(sigma[:rank]) @ vt[:rank, :]
 
     cov_matrix = MinCovDet().fit(cells).covariance_
-    whitening_transform = linalg.inv(whitening_transform)
+    whitening_transform = linalg.inv(cov_matrix)
     return whitening_transform, rank
 
 
@@ -137,7 +137,7 @@ def svht(X, sigma=None):
         raise ValueError('invalid input matrix')
     beta = m / n # ratio between 0 and 1
     if sigma is None: # sigma unknown
-        sv = svdvals(X)
+        sv = linalg.svdvals(X)
         sv = np.squeeze(sv)
         if sv.ndim != 1:
             raise ValueError('vector of singular values must be 1-dimensional')

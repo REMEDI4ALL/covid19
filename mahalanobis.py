@@ -10,7 +10,7 @@ Mahalanobis distance = Ordinary Euclidean distance computed after whitening tran
 
 import numpy as np
 from scipy import linalg, stats
-from sklearn.covariance import MinCovDet
+# from sklearn.covariance import MinCovDet
 
 
 def compute_whitening_transform(cells, rank=None):
@@ -34,31 +34,32 @@ def compute_whitening_transform(cells, rank=None):
     return whitening_transform, rank
 
 
-def compute_whitening_transform_robust(cells, rank=None):
-    u, sigma, vt = linalg.svd(cells - np.mean(cells, axis=0), check_finite=True)
-    descending_idx = sigma.argsort()[::-1]
-    sigma = sigma[descending_idx]
-    u = u[:, descending_idx]
-    vt = vt[descending_idx, :]
+# def compute_whitening_transform_robust(cells, rank=None):
+#     u, sigma, vt = linalg.svd(cells - np.mean(cells, axis=0), check_finite=True)
+#     descending_idx = sigma.argsort()[::-1]
+#     sigma = sigma[descending_idx]
+#     u = u[:, descending_idx]
+#     vt = vt[descending_idx, :]
 
-    if rank is None:
-        eps = np.finfo(u.dtype.char.lower()).eps
-        rtol = np.max(np.abs(sigma)) * max(cells.shape) * eps
-        cutoff = (abs(sigma) > rtol)
-        rank = np.sum(cutoff)
-    else:
-        cutoff = (sigma > 0.)
-        rank = min(np.sum(cutoff), rank)
-    cells = u[:, :rank] @ np.diag(sigma[:rank]) @ vt[:rank, :]
+#     if rank is None:
+#         eps = np.finfo(u.dtype.char.lower()).eps
+#         rtol = np.max(np.abs(sigma)) * max(cells.shape) * eps
+#         cutoff = (abs(sigma) > rtol)
+#         rank = np.sum(cutoff)
+#     else:
+#         cutoff = (sigma > 0.)
+#         rank = min(np.sum(cutoff), rank)
+#     cells = u[:, :rank] @ np.diag(sigma[:rank]) @ vt[:rank, :]
 
-    cov_matrix = MinCovDet().fit(cells).covariance_
-    whitening_transform = linalg.inv(cov_matrix)
-    return whitening_transform, rank
+#     cov_matrix = MinCovDet().fit(cells).covariance_
+#     whitening_transform = linalg.inv(cov_matrix)
+#     return whitening_transform, rank
 
 
 def get_distance(healthy_cells, cells, n_components=None, robust=False):
     if robust:
-        whitening_transform, n_components = compute_whitening_transform_robust(healthy_cells, rank=n_components)
+        # whitening_transform, n_components = compute_whitening_transform_robust(healthy_cells, rank=n_components)
+        raise NotImplementedError("To test the variant with robust covariance estimation, you can try the commented-out method above.")
     else:
         whitening_transform, n_components = compute_whitening_transform(healthy_cells, rank=n_components)
 
@@ -72,7 +73,8 @@ def get_distance(healthy_cells, cells, n_components=None, robust=False):
 
 def get_distance_deviation(healthy_cells, cells, n_components=None, robust=False):
     if robust:
-        whitening_transform, n_components = compute_whitening_transform_robust(healthy_cells, rank=n_components)
+        # whitening_transform, n_components = compute_whitening_transform_robust(healthy_cells, rank=n_components)
+        raise NotImplementedError("To test the variant with robust covariance estimation, you can try the commented-out method above.")
     else:
         whitening_transform, n_components = compute_whitening_transform(healthy_cells, rank=n_components)
 
@@ -88,7 +90,8 @@ def get_distance_deviation(healthy_cells, cells, n_components=None, robust=False
 
 def get_proba(healthy_cells, cells, n_components=None, robust=False):
     if robust:
-        whitening_transform, n_components = compute_whitening_transform_robust(healthy_cells, rank=n_components)
+        # whitening_transform, n_components = compute_whitening_transform_robust(healthy_cells, rank=n_components)
+        raise NotImplementedError("To test the variant with robust covariance estimation, you can try the commented-out method above.")
     else:
         whitening_transform, n_components = compute_whitening_transform(healthy_cells, rank=n_components)
 

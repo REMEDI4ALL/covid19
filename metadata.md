@@ -2,8 +2,12 @@
 
 This folder contains Cell Painting results for drug combinations against COVID-19, including some analysis code.
 
+Data consist of the CellProfiler features that were first obtained for each cell and subsequently averaged by median within each well. Among the resulting averaged features, we have three main types of measurements (cells):
+1. `treated`: features of cells that were treated either with a two-drug combination or a single antiviral drug for control (Nirmatrelvir, GC376, Remdesivir);
+2. `infected`: features of cells that were exposed to Covid and no compound except the solvent (DMSO) was added;
+3. `uninfected`: features of healthy cells.
+
 ## Experiment
-Configurations:
 - \# of drug combinations: 924;
 - \# of drug compounds: 184;
 - cell line: A549;
@@ -17,17 +21,14 @@ Each drug compound was tested at two concentrations. Therefore, we have 2\*2=4 m
 
 
 ## Files
-- `Covid-Combo.parquet`: data file (table), where each row represents morphological features obtained from Cell Painting -> CellProfiler features, per cell -> Median-averaged features, per well. First five columns contain metadata;
-- `id_to_name.txt`: two-column correspondence: `batch_id` -- compound name. Note that in the data file we only use `batch_id` as a unique identifier for each measurement;
-- `Covid Combo.ipynb`: python notebook with analysis based on Mahalanobis distance, i.e., ranking of combinations based on the similarity between morphological profile of a cell treatead by some drug combination and an uninfected cell;
+- `Covid-Combo.parquet.gzip`: data file (table), where each row represents morphological features obtained from Cell Painting -> CellProfiler features, per cell -> Median-averaged features, per well. First five columns contain metadata;
+- `id_to_name.txt`: two-column correspondence {batch_id: compound name}. Note that in the data file we only use batch_id as a unique identifier for each measurement;
+- `Covid Combo.ipynb`: python notebook with analysis based on Mahalanobis distance, i.e., ranking of combinations based on the similarity between morphological profile of a cell treatead by some drug combination and uninfected cells;
 - `mahalanobis.py`: functions and utilities for `Covid Combo.ipynb`;
 - `requirements.txt`: python requirement for analysis code.
 
 
 ## Metadata columns
-In addition to the columns corresponding to morphological features from CellProfiler, the data file  has metadata columns. Below is the description of each metadata column:
-1. `batch_id`: unique identifier of each compound -- find the corresponding compound name in 'id_to_name.txt';
-2. `cmpd_conc`: compound concentration in the given drug combination, in micromoles;
-3. `type`: {'treated', 'infected', 'uninfected'}, i.e., drug combination, DMSO, or healthy, respectively;
-4. `pair_batch_id`: batch id of another drug compound in the given combination. If not a combination (i.e., single antiviral drug, uninfected, or DMSO), then `pair_batch_id`='single';
-5. `combo_id`: enumeration of unique drug combinations. If not a drug combination, then `combo_id`=-1.
+In addition to the columns corresponding to morphological features from CellProfiler, we have metadata columns:
+1. `type`: {'treated', 'infected', 'uninfected'}, i.e., drug (either combination or single control), DMSO, and healthy, respectively;
+2. `batch_id`: unique identifier of the first drug in the given combination (find the corresponding compound name in 

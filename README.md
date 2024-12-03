@@ -22,7 +22,7 @@ Each drug compound was tested at two concentrations. Therefore, we have 2\*2=4 m
 
 
 ## Files
-- `data/Covid-Combo.parquet.gzip`: data file (table), where each row represents morphological features obtained from Cell Painting -> CellProfiler features, per cell -> Median-averaged features, per well. First five columns contain metadata. Can be read with, e.g., `pandas.read_parquet()`;
+- `data/covid_combo.parquet.gzip`: data file (table), where each row represents morphological features obtained from Cell Painting -> CellProfiler features, per cell -> Median-averaged features, per well. First five columns contain metadata. Can be read with, e.g., `pandas.read_parquet()`;
 - `data/id_to_name.txt`: two-column correspondence {batch_id: compound name}. We do not use compound names in the data file;
 - `Covid Combo.ipynb`: python notebook with analysis based on Mahalanobis distance, i.e., ranking of combinations based on the similarity between morphological profile of a cell treatead by some drug combination and uninfected cells;
 - `mahalanobis.py`: functions and utilities for `Covid Combo.ipynb`;

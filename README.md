@@ -1,4 +1,4 @@
-# Covid: Drug Combinations
+# COVID-CP-COMBO-1
 
 This folder contains Cell Painting results for two-drug combinations against COVID-19, including some analysis code.
 
@@ -9,8 +9,9 @@ Data consist of the [CellProfiler](https://github.com/CellProfiler/CellProfiler.
 3. `infected`: cells exposed to Covid but not treated with any drug;
 4. `uninfected`: healthy cells.
 
-## Experiment
+## Experiment:
 
+- drug compounds selected based on COVID-CP-CONFIRM;
 - number of unique drug compounds: 184;
 - number of unique drug combinations: 924;
 - cell line: A549;

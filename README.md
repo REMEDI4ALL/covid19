@@ -6,12 +6,12 @@ Data consist of the [CellProfiler](https://github.com/CellProfiler/CellProfiler.
 
 1. `combo`: cells treated with a two-drug combination;
 2. `single`: cells treated with a single drug: antiviral control (GC376, Nirmatrelvir, Remdesivir) or positive control (Fenbendazole, Fluphenazine Dihydrochloride, Etoposide, Staurosporine);
-3. `infected`: cells exposed to Covid but not treated with any drug;
+3. `infected`: cells exposed to Covid but not treated by any drug;
 4. `uninfected`: healthy cells.
 
 ## Experiment:
 
-- drug compounds selected based on COVID-CP-CONFIRM;
+- drug compounds selected based on COVID-CP-CONFIRM (read more at the bottom);
 - number of unique drug compounds: 184;
 - number of unique drug combinations: 924;
 - cell line: A549;
@@ -42,3 +42,26 @@ In addition to columns corresponding to morphological features from CellProfiler
 5. `conc_2`: concentration of the second drug. If not a combination, then `conc_2`=`conc_1`.
 
 **Note**: although we use the indexes `_1` and `_2` to distinguish two drugs in a combination, it does not imply any order –– drug combinations are 'symmetric' pairs in this sense.
+
+
+# COVID-CP-CONFIRM
+For completeness, we also provide CellProfiler features from COVID-CP-CONFIRM experiment. This was the experiment on single compounds against COVID-19 conducted prior to COVID-CP-COMBO-1.
+Cell type in this experiment is one of
+
+1. `single`: cells treated with a single drug;
+2. `infected`: cells exposed to Covid but not treated by any drug (DMSO);
+3. `uninfected`: healthy cells.
+
+## Files
+Corresponding files include
+- `data/covid_confirm.parquet.gzip`: data file (table), where each row represents morphological features obtained from the pipeline: Cell Painting -> CellProfiler features, per cell -> Median-averaged features, per well.
+- `Covid Confirm.ipynb`: python notebook with analysis based on Mahalanobis distance.
+
+## Metadata columns
+
+In addition to columns corresponding to morphological features from CellProfiler, we have metadata columns:
+
+1. `type`: {'single', 'infected', 'uninfected'}.
+2. `batch_id`: unique identifier of a drug (find the corresponding compound name in the file `data/id_to_name.txt`).
+3. `conc`: concentration of a drug in micromoles.
+4. `count_nuclei`: average number of nuclei in a cell estimated by CellProfiler.

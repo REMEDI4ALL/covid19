@@ -25,7 +25,7 @@ Each drug compound was tested at two concentrations. Therefore, we have 2\*2=4 m
 
 ## Files
 
-- `data/covid_combo.parquet.gzip`: data file (table), where each row represents morphological features obtained from the pipeline: Cell Painting -> CellProfiler features, per cell -> Median-averaged features, per well. Five columns contain metadata. Can be read with, e.g., `pandas.read_parquet()`.
+- `data/covid_combo.parquet.gzip`: data file (table), where each row represents morphological features obtained from the pipeline: Cell Painting -> CellProfiler features, per cell -> Median-averaged features, per well. Six columns contain metadata. Can be read with, e.g., `pandas.read_parquet()`.
 - `data/id_to_name.txt`: two-column correspondence {batch_id: compound name}. We do not use compound names in the data file.
 - `Covid Combo.ipynb`: python notebook with analysis based on Mahalanobis distance, i.e., ranking of combinations based on the similarity between morphological profile of a cell treatead by some drug combination and uninfected cells.
 - `mahalanobis.py`: functions and utilities for `Covid Combo.ipynb`.
@@ -33,13 +33,14 @@ Each drug compound was tested at two concentrations. Therefore, we have 2\*2=4 m
 
 ## Metadata columns
 
-In addition to columns corresponding to morphological features from CellProfiler, we have metadata columns:
+In addition to columns corresponding to morphological features from CellProfiler, we have the following columns:
 
 1. `type`: {'single', 'combo', 'infected', 'uninfected'}, i.e., single drug (control), drug combination, DMSO, and healthy.
 2. `batch_id_1`: unique identifier of the first drug in the given combination (find the corresponding compound name in the file `data/id_to_name.txt`).
 3. `batch_id_2`: id of the second drug. If not a combination, then `batch_id_2`=`batch_id_1`.
 4. `conc_1`: concentration of the first drug in the given combination, in micromoles.
 5. `conc_2`: concentration of the second drug. If not a combination, then `conc_2`=`conc_1`.
+6. `count_nuclei`: average number of nuclei in a cell estimated by CellProfiler.
 
 **Note**: although we use the indexes `_1` and `_2` to distinguish two drugs in a combination, it does not imply any order –– drug combinations are 'symmetric' pairs in this sense.
 
@@ -59,7 +60,7 @@ Corresponding files include
 
 ## Metadata columns
 
-In addition to columns corresponding to morphological features from CellProfiler, we have metadata columns:
+In addition to columns corresponding to morphological features from CellProfiler, we have the following columns:
 
 1. `type`: {'single', 'infected', 'uninfected'}.
 2. `batch_id`: unique identifier of a drug (find the corresponding compound name in the file `data/id_to_name.txt`).
